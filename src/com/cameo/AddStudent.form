@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.cameo.AddStudent">
+  <grid id="27dc6" binding="rootPanel" layout-manager="GridBagLayout">
+    <constraints>
+      <xy x="341" y="10" width="500" height="522"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <component id="dc38c" class="javax.swing.JTextField" binding="studentFirstNameTextField" default-binding="true">
+        <constraints>
+          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <hspacer id="6b242">
+        <constraints>
+          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+      </hspacer>
+      <vspacer id="3dbd2">
+        <constraints>
+          <grid row="8" column="1" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+      </vspacer>
+      <component id="f3aa" class="javax.swing.JTextField" binding="studentLastNameTextField" default-binding="true">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="d6bb1" class="javax.swing.JTextField" binding="studentEmailTextField" default-binding="true">
+        <constraints>
+          <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="92f1d" class="javax.swing.JTextField" binding="studentStreetAddressTextField" default-binding="true">
+        <constraints>
+          <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="992c9" class="javax.swing.JComboBox" binding="state">
+        <constraints>
+          <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <model>
+            <item value=""/>
+            <item value="AL"/>
+            <item value="AK"/>
+            <item value="AZ"/>
+            <item value="AR"/>
+            <item value="CA"/>
+            <item value="CO"/>
+            <item value="CT"/>
+            <item value="DE"/>
+            <item value="FL"/>
+            <item value="GA"/>
+            <item value="HI"/>
+            <item value="ID"/>
+            <item value="IL"/>
+            <item value="IN"/>
+            <item value="IA"/>
+            <item value="KS"/>
+            <item value="KY"/>
+            <item value="LA"/>
+            <item value="ME"/>
+            <item value="MD"/>
+            <item value="MA"/>
+            <item value="MI"/>
+            <item value="MN"/>
+            <item value="MS"/>
+            <item value="MO"/>
+            <item value="MT"/>
+            <item value="NE"/>
+            <item value="NV"/>
+            <item value="NH"/>
+            <item value="NJ"/>
+            <item value="NM"/>
+            <item value="NY"/>
+            <item value="NC"/>
+            <item value="ND"/>
+            <item value="OH"/>
+            <item value="OK"/>
+            <item value="OR"/>
+            <item value="PA"/>
+            <item value="RI"/>
+            <item value="SC"/>
+            <item value="SD"/>
+            <item value="TN"/>
+            <item value="TX"/>
+            <item value="UT"/>
+            <item value="VT"/>
+            <item value="VA"/>
+            <item value="WA"/>
+            <item value="WV"/>
+            <item value="WI"/>
+            <item value="WY"/>
+          </model>
+        </properties>
+      </component>
+      <component id="fb6b7" class="javax.swing.JButton" binding="submitButton" default-binding="true">
+        <constraints>
+          <grid row="9" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value="Submit"/>
+        </properties>
+      </component>
+      <component id="1d71" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value="First Name"/>
+        </properties>
+      </component>
+      <component id="fcdae" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value="Last Name"/>
+        </properties>
+      </component>
+      <component id="79192" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value="Email"/>
+        </properties>
+      </component>
+      <component id="ee0b2" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value="Street Address"/>
+        </properties>
+      </component>
+      <component id="c0adf" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value="State"/>
+        </properties>
+      </component>
+      <component id="e8208" class="javax.swing.JTextField" binding="studentZipCodeTextField" default-binding="true">
+        <constraints>
+          <grid row="6" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="291a" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value="Zip Code"/>
+        </properties>
+      </component>
+      <component id="f136a" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value="City"/>
+        </properties>
+      </component>
+      <component id="d054c" class="javax.swing.JTextField" binding="studentCityTextField" default-binding="true">
+        <constraints>
+          <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+      <component id="47ff" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="7" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value="Phone Number"/>
+        </properties>
+      </component>
+      <component id="d9dca" class="javax.swing.JTextField" binding="phoneNumberTextField" default-binding="true">
+        <constraints>
+          <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="-1"/>
+          </grid>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties>
+          <text value=""/>
+        </properties>
+      </component>
+    </children>
+  </grid>
+</form>
