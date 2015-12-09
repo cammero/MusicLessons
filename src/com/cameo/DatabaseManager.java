@@ -10,8 +10,8 @@ public class DatabaseManager {
 
     private static String DB_CONNECTION_URL = "jdbc:mysql://localhost:3306/";
     private static final String DB_NAME = "musicLessons";
-    private static final String USER = "cameo";
-    private static final String PASS = "chicagobears";
+    private static final String USER = "root";
+    private static final String PASS = "zc4174by";
 
     static Statement statement = null;
     static Connection conn = null;
@@ -56,11 +56,11 @@ public class DatabaseManager {
             if (!DatabaseManager.studentDemoTableExists()) {
 
                 //TODO (possibly fixed) Is the "PRIMARY KEY (student_id) at the end of this statement correct?
-                String createTableSQL = "CREATE TABLE IF NOT EXISTS " + STUDENT_TABLE_NAME + " (" + PK_COLUMN + " int NOT NULL AUTO_INCREMENT, "
+                String createTableSQL = "CREATE TABLE IF NOT EXISTS student_demo (" + PK_COLUMN + " int NOT NULL AUTO_INCREMENT, "
                         + S_FNAME + " varchar(30), " + S_LNAME + " varchar(50), " + S_EMAIL + " varchar(50), " + S_ADDRESS
-                        + " varchar(50), " + S_CITY +  "varchar(30), " + S_STATE + " char(2), " + S_ZIP + " varchar(10), "
+                        + " varchar(50), " + S_CITY +  " varchar(30), " + S_STATE + " char(2), " + S_ZIP + " varchar(10), "
                         + S_PHONE_NUMBER + " varchar(12), " + AMOUNT_PAID + " double, PRIMARY KEY(" + PK_COLUMN + "))";
-
+                System.out.println(createTableSQL);
                 statement.executeUpdate(createTableSQL);
                 System.out.println("Created student_demo table");
             }
@@ -71,52 +71,53 @@ public class DatabaseManager {
         return true;
     }
 
-    public static boolean studentDemoTableExists(){
+    public static boolean studentDemoTableExists() throws SQLException {
         //from Clara's movieDatabase program
         String checkTablePresentQuery = "SHOW TABLES LIKE " + STUDENT_TABLE_NAME;//Can query the database schema
-//        ResultSet tablesRS = statement.executeQuery(checkTablePresentQuery);
-//        if (tablesRS.next()) {    //If ResultSet has a next row, it has at least one row... that must be our table
-//            return true;
-//        }
-//        return false;
-
-        //TODO Not understanding exactly what this does or why it doesn't work, but the above does...
-        try{
-            System.out.println("Checking to see if the table is present");
-            ResultSet tableRS = statement.executeQuery(checkTablePresentQuery);
-            if (tableRS.next()) {
-                return true;
-            }
-            return false;
-        } catch (SQLException se) {
-            se.printStackTrace();
+        ResultSet tablesRS = statement.executeQuery(checkTablePresentQuery);
+        if (tablesRS.next()) {    //If ResultSet has a next row, it has at least one row... that must be our table
+            return true;
         }
         return false;
+
+        //TODO Not understanding exactly what this does or why it doesn't work, but the above does...
+//        try{
+//            System.out.println("Checking to see if the table is present");
+//            ResultSet tableRS = statement.executeQuery(checkTablePresentQuery);
+//            if (tableRS.next()) {
+//                return true;
+//            }
+//            return false;
+//        } catch (SQLException se) {
+//            se.printStackTrace();
+//        }
+//        return false;
     }
 
     public void saveNew(Student newStudent){
         try {
             //prepared statement help from Week 12 slides
-//            String addDataToStudentTable = "INSERT INTO student_demo (student_first_name, student_last_name, student_email, "
-//                    + "student_street_address, student_city, student_state, student_zip, student_phone_number) " +
-//                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-//            System.out.println(addDataToStudentTable);
-//            PreparedStatement psInsert = conn.prepareStatement(addDataToStudentTable);
-//            psInsert.setString(1, newStudent.getFirstName());
-//            psInsert.setString(2, newStudent.getLastName());
-//            psInsert.setString(3, newStudent.getEmail());
-//            psInsert.setString(4, newStudent.getStreetAddress());
-//            psInsert.setString(5, newStudent.getCity());
-//            psInsert.setString(6, newStudent.getState());
-//            psInsert.setString(7, newStudent.getZipCode());
-//            psInsert.setString(8, newStudent.getPhoneNumber());
-//            psInsert.executeUpdate();
-
-        String addDataToStudentTable = "INSERT INTO " + STUDENT_TABLE_NAME + " (" + S_FNAME + ", " + S_LNAME + ", " + S_EMAIL
-            + ", " + S_ADDRESS + ", " + S_CITY + ", " + S_STATE + ", " + S_ZIP + ", " + S_PHONE_NUMBER + ") VALUES (" + newStudent.getFirstName() + ", " +
-            newStudent.getLastName() + ", " + newStudent.getEmail() + ", " + newStudent.getStreetAddress() + ", " +
-            newStudent.getCity() + ", " + newStudent.getState() + ", " + newStudent.getZipCode() + ", " + newStudent.getPhoneNumber() + ")";
+            String addDataToStudentTable = "INSERT INTO student_demo (student_first_name, student_last_name, student_email, "
+                    + "student_street_address, student_city, student_state, student_zip, student_phone_number) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
             System.out.println(addDataToStudentTable);
+            PreparedStatement psInsert = conn.prepareStatement(addDataToStudentTable);
+            psInsert.setString(1, newStudent.getFirstName());
+            psInsert.setString(2, newStudent.getLastName());
+            psInsert.setString(3, newStudent.getEmail());
+            psInsert.setString(4, newStudent.getStreetAddress());
+            psInsert.setString(5, newStudent.getCity());
+            psInsert.setString(6, newStudent.getState());
+            psInsert.setString(7, newStudent.getZipCode());
+            psInsert.setString(8, newStudent.getPhoneNumber());
+            System.out.println(psInsert);
+            psInsert.executeUpdate();
+
+//        String addDataToStudentTable = "INSERT INTO " + STUDENT_TABLE_NAME + " (" + S_FNAME + ", " + S_LNAME + ", " + S_EMAIL
+//            + ", " + S_ADDRESS + ", " + S_CITY + ", " + S_STATE + ", " + S_ZIP + ", " + S_PHONE_NUMBER + ") VALUES (" + newStudent.getFirstName() + ", " +
+//            newStudent.getLastName() + ", " + newStudent.getEmail() + ", " + newStudent.getStreetAddress() + ", " +
+//            newStudent.getCity() + ", " + newStudent.getState() + ", " + newStudent.getZipCode() + ", " + newStudent.getPhoneNumber() + ")";
+//            System.out.println(addDataToStudentTable);
         statement.executeUpdate(addDataToStudentTable);
 
             System.out.println("You just created a student");

@@ -43,7 +43,7 @@ public class AddStudent extends JFrame{
 
             Student newStudent = new Student(sFirstName, sLastName, sEmail, sStreetAdd, sCity, sState, sZip, sPhoneNumber);
             DatabaseManager databaseManager = new DatabaseManager();
-            //databaseManager.saveNew(newStudent);
+            databaseManager.saveNew(newStudent);
             }
         });
     }
