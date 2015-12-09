@@ -56,12 +56,11 @@ public class DatabaseManager {
             if (!DatabaseManager.studentDemoTableExists()) {
 
                 //TODO (possibly fixed) Is the "PRIMARY KEY (student_id) at the end of this statement correct?
-                String createTableSQL = "CREATE TABLE IF NOT EXISTS" + STUDENT_TABLE_NAME + " (" + PK_COLUMN + " int NOT NULL AUTO_INCREMENT, "
+                String createTableSQL = "CREATE TABLE IF NOT EXISTS " + STUDENT_TABLE_NAME + " (" + PK_COLUMN + " int NOT NULL AUTO_INCREMENT, "
                         + S_FNAME + " varchar(30), " + S_LNAME + " varchar(50), " + S_EMAIL + " varchar(50), " + S_ADDRESS
                         + " varchar(50), " + S_CITY +  "varchar(30), " + S_STATE + " char(2), " + S_ZIP + " varchar(10), "
                         + S_PHONE_NUMBER + " varchar(12), " + AMOUNT_PAID + " double, PRIMARY KEY(" + PK_COLUMN + "))";
 
-                System.out.println(createTableSQL);
                 statement.executeUpdate(createTableSQL);
                 System.out.println("Created student_demo table");
             }

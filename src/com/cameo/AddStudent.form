@@ -70,7 +70,7 @@
         </constraints>
         <properties>
           <model>
-            <item value=""/>
+            <item value="Select One"/>
             <item value="AL"/>
             <item value="AK"/>
             <item value="AZ"/>
