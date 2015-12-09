@@ -13,7 +13,7 @@ public class Instructor {
     private String state;
     private String zipCode;
     private String phoneNumber;
-    private double amountPaidTo = 0;
+    private double earnings = 0;
 
     public Instructor(String firstName, String lastName, String email, String streetAddress, String city, String state, String zipCode, String phoneNumber){
         this.firstName = firstName;
@@ -26,10 +26,10 @@ public class Instructor {
         this.phoneNumber = phoneNumber;
     }
 
-    public double addToAmountPaidTo (double costOfClass){
+    public double addToEarnings (double costOfClass){
         //instructor gets paid 60% of what the lesson costs
-        amountPaidTo += costOfClass*.6;
-        return amountPaidTo;
+        earnings += costOfClass*.6;
+        return earnings;
     }
 
     public String getFirstName() { return firstName; }
@@ -64,6 +64,6 @@ public class Instructor {
 
     public void setZipCode(String zipCode) { this.zipCode = zipCode; }
 
-    public double getAmountPaid() { return amountPaidTo; }
+    public double getEarnings() { return earnings; }
 }
 

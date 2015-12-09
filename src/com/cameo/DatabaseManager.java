@@ -10,8 +10,8 @@ public class DatabaseManager {
 
     private static String DB_CONNECTION_URL = "jdbc:mysql://localhost:3306/";
     private static final String DB_NAME = "musicLessons";
-    private static final String USER = "Cameo";
-    private static final String PASS = "Mil@Viol3t";
+    private static final String USER = "cameo";
+    private static final String PASS = "chicagobears";
 
     static Statement statement = null;
     static Connection conn = null;
@@ -32,17 +32,14 @@ public class DatabaseManager {
 
     public DatabaseManager(){
         //create the database if it doesn't exist
-        System.out.println("Checking to see if the db is empty");
+        System.out.println("Go straight to set up");
         //TODO Ugh!
-        if (DatabaseManager.DB_NAME.isEmpty()) {
             DatabaseManager.setup();
-        }
     }
 
     //setup() method taken from Clara's MovieRatings program
     public static boolean setup() {
         try {
-            System.out.println("It was empty");
             //load driver class
             try {
                 String Driver = "com.mysql.jdbc.Driver";
@@ -55,14 +52,14 @@ public class DatabaseManager {
             conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
 
             statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
-            System.out.println("Got to this part");
+            System.out.println("Got connected");
             if (!DatabaseManager.studentDemoTableExists()) {
 
-                //TODO is the "PRIMARY KEY (student_id) at the end of this statement correct?
-                String createTableSQL = "CREATE TABLE " + STUDENT_TABLE_NAME + " (" + PK_COLUMN + " int NOT NULL AUTO_INCREMENT, "
+                //TODO (possibly fixed) Is the "PRIMARY KEY (student_id) at the end of this statement correct?
+                String createTableSQL = "CREATE TABLE IF NOT EXISTS" + STUDENT_TABLE_NAME + " (" + PK_COLUMN + " int NOT NULL AUTO_INCREMENT, "
                         + S_FNAME + " varchar(30), " + S_LNAME + " varchar(50), " + S_EMAIL + " varchar(50), " + S_ADDRESS
                         + " varchar(50), " + S_CITY +  "varchar(30), " + S_STATE + " char(2), " + S_ZIP + " varchar(10), "
-                        + S_PHONE_NUMBER + " varchar(12), " + AMOUNT_PAID + " double, PRIMARY KEY (student_id))";
+                        + S_PHONE_NUMBER + " varchar(12), " + AMOUNT_PAID + " double, PRIMARY KEY(" + PK_COLUMN + "))";
 
                 System.out.println(createTableSQL);
                 statement.executeUpdate(createTableSQL);

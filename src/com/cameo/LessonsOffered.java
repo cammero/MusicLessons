@@ -37,8 +37,7 @@ public class LessonsOffered {
 
     public double getCost() { return cost; }
 
-    public void setCost(double cost) {     this.cost = cost;
-    }
+    public void setCost(double cost) { this.cost = cost; }
 
     public String getTime() { return time; }
 

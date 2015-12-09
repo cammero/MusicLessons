@@ -1,6 +1,7 @@
 package com.cameo;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,11 +22,12 @@ public class AddStudent extends JFrame{
 
 
     public AddStudent(){
-        super("Register for Music Lessons");
+        super("Create an Account");
         setContentPane(rootPanel);
         pack();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
+        setSize(new Dimension (250, 350));
 
         submitButton.addActionListener(new ActionListener() {
             @Override
