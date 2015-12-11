@@ -7,7 +7,7 @@ import java.awt.*;
  * Created by Cameo on 12/7/2015.
  */
 public class SearchForLessons extends JFrame{
-    private JButton searchForLessonsButton;
+    private JButton searchForLessonsNearButton;
     private JTextField searchZipTextField;
     private JPanel rootPanel2;
     private JComboBox instrumentComboBox;

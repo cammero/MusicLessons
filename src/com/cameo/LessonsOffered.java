@@ -7,19 +7,17 @@ public class LessonsOffered {
     int courseNumber;
     String name;
     String instrument;
-    String level;
     double cost;
     //TODO figure out how to store times
-    String time;
+    String timeOfDay;
     String dayOfWeek;
     String place;
     int instructorID;
 
     //TODO (same as student) does constructor need PK?
-    LessonsOffered(String name, String instrument, String level, double cost){
+    LessonsOffered(String name, String instrument, double cost){
         this.name = name;
         this.instrument = instrument;
-        this.level = level;
         this.cost = cost;
     }
 
@@ -31,17 +29,13 @@ public class LessonsOffered {
 
     public void setInstrument(String instrument) { this.instrument = instrument; }
 
-    public String getLevel() { return level; }
-
-    public void setLevel(String level) { this.level = level; }
-
     public double getCost() { return cost; }
 
     public void setCost(double cost) { this.cost = cost; }
 
-    public String getTime() { return time; }
+    public String getTime() { return timeOfDay; }
 
-    public void setTime(String time) { this.time = time; }
+    public void setTime(String time) { this.timeOfDay = timeOfDay; }
 
     public String getPlace() { return place; }
 

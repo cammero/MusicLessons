@@ -10,8 +10,8 @@ public class DatabaseManager {
 
     private static String DB_CONNECTION_URL = "jdbc:mysql://localhost:3306/";
     private static final String DB_NAME = "musicLessons";
-    private static final String USER = "root";
-    private static final String PASS = "zc4174by";
+    private static final String USER = "cameo";
+    private static final String PASS = "chicagobears";
 
     static Statement statement = null;
     static Connection conn = null;
@@ -80,7 +80,6 @@ public class DatabaseManager {
         }
         return false;
 
-        //TODO Not understanding exactly what this does or why it doesn't work, but the above does...
 //        try{
 //            System.out.println("Checking to see if the table is present");
 //            ResultSet tableRS = statement.executeQuery(checkTablePresentQuery);
@@ -118,7 +117,7 @@ public class DatabaseManager {
 //            newStudent.getLastName() + ", " + newStudent.getEmail() + ", " + newStudent.getStreetAddress() + ", " +
 //            newStudent.getCity() + ", " + newStudent.getState() + ", " + newStudent.getZipCode() + ", " + newStudent.getPhoneNumber() + ")";
 //            System.out.println(addDataToStudentTable);
-        statement.executeUpdate(addDataToStudentTable);
+//        statement.executeUpdate(addDataToStudentTable);
 
             System.out.println("You just created a student");
         }

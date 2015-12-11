@@ -19,6 +19,7 @@ public class AddStudent extends JFrame{
     private JButton submitButton;
     private JPanel rootPanel;
     private JTextField studentCityTextField;
+    private JButton quitButton;
 
 
     public AddStudent(){
@@ -44,6 +45,12 @@ public class AddStudent extends JFrame{
             Student newStudent = new Student(sFirstName, sLastName, sEmail, sStreetAdd, sCity, sState, sZip, sPhoneNumber);
             DatabaseManager databaseManager = new DatabaseManager();
             databaseManager.saveNew(newStudent);
+            }
+        });
+        quitButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //TODO code to close
             }
         });
     }

@@ -5,6 +5,7 @@ package com.cameo;
  */
 public class Instructor {
 
+    private int instructorID;
     private String firstName;
     private String lastName;
     private String email;
@@ -15,6 +16,7 @@ public class Instructor {
     private String phoneNumber;
     private double earnings = 0;
 
+    //TODO does PK need to be in constructor?
     public Instructor(String firstName, String lastName, String email, String streetAddress, String city, String state, String zipCode, String phoneNumber){
         this.firstName = firstName;
         this.lastName = lastName;
