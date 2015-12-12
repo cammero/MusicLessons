@@ -1,5 +1,7 @@
 package com.cameo;
 
+import java.util.ArrayList;
+
 /**
  * Created by Cameo on 12/5/2015.
  */
@@ -15,8 +17,8 @@ public class Student {
     private String zipCode;
     private String phoneNumber;
     private double totalPaidForLessons = 0;
+    private ArrayList<String> lessonsSchedule;
 
-    //TODO does Student constructor need student ID (PK) in it?
     public Student(String firstName, String lastName, String email, String streetAddress, String city, String state, String zipCode, String phoneNumber){
         this.firstName = firstName;
         this.lastName = lastName;

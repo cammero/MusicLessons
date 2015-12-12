@@ -9,7 +9,7 @@ import java.sql.*;
 public class DatabaseManager {
 
     private static String DB_CONNECTION_URL = "jdbc:mysql://localhost:3306/";
-    private static final String DB_NAME = "musicLessons";
+    private static final String DB_NAME = "notatest";
     private static final String USER = "cameo";
     private static final String PASS = "chicagobears";
 
@@ -33,7 +33,6 @@ public class DatabaseManager {
     public DatabaseManager(){
         //create the database if it doesn't exist
         System.out.println("Go straight to set up");
-        //TODO Ugh!
             DatabaseManager.setup();
     }
 
@@ -49,21 +48,25 @@ public class DatabaseManager {
                 return false;
             }
 
-            conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
-
+            //conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
+            conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASS);
+            String createDatabase = "CREATE DATABASE IF NOT EXISTS " + DB_NAME;
             statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            statement.executeUpdate(createDatabase);
             System.out.println("Got connected");
-            if (!DatabaseManager.studentDemoTableExists()) {
+            String useDatabase = "USE " + DB_NAME;
+            statement.execute(useDatabase);
 
-                //TODO (possibly fixed) Is the "PRIMARY KEY (student_id) at the end of this statement correct?
-                String createTableSQL = "CREATE TABLE IF NOT EXISTS student_demo (" + PK_COLUMN + " int NOT NULL AUTO_INCREMENT, "
-                        + S_FNAME + " varchar(30), " + S_LNAME + " varchar(50), " + S_EMAIL + " varchar(50), " + S_ADDRESS
-                        + " varchar(50), " + S_CITY +  " varchar(30), " + S_STATE + " char(2), " + S_ZIP + " varchar(10), "
-                        + S_PHONE_NUMBER + " varchar(12), " + AMOUNT_PAID + " double, PRIMARY KEY(" + PK_COLUMN + "))";
-                System.out.println(createTableSQL);
-                statement.executeUpdate(createTableSQL);
-                System.out.println("Created student_demo table");
-            }
+            System.out.println("Create the table!");
+
+            String createTableSQL = "CREATE TABLE IF NOT EXISTS student_demo (" + PK_COLUMN + " int NOT NULL AUTO_INCREMENT, "
+                    + S_FNAME + " varchar(30), " + S_LNAME + " varchar(50), " + S_EMAIL + " varchar(50), " + S_ADDRESS
+                    + " varchar(50), " + S_CITY +  " varchar(30), " + S_STATE + " char(2), " + S_ZIP + " varchar(10), "
+                    + S_PHONE_NUMBER + " varchar(12), " + AMOUNT_PAID + " double, PRIMARY KEY(" + PK_COLUMN + "))";
+
+            statement.executeUpdate(createTableSQL);
+            System.out.println("Created student_demo table if it didn't already exist");
+
         }
         catch (Exception e) {
             return false;
@@ -92,10 +95,26 @@ public class DatabaseManager {
 //        }
 //        return false;
     }
+    public static ResultSet createInstrumentComboBox() {
+        try {
+            String instrumentComboBoxQuery = "select distinct instrument from instructor_instrument;";
+            ResultSet rs = statement.executeQuery(instrumentComboBoxQuery);
+            return rs;
+        }
+        catch (SQLException sqle) {
+            System.out.println("Error getting instruments");
+            System.out.println(sqle);
+            //TODO When do we want to print out stack trace?
+            sqle.printStackTrace();
+            //TODO what should this return?
+            return null;
+        }
+    }
 
     public void saveNew(Student newStudent){
         try {
             //prepared statement help from Week 12 slides
+            //statement adds student information to student_demo table in database
             String addDataToStudentTable = "INSERT INTO student_demo (student_first_name, student_last_name, student_email, "
                     + "student_street_address, student_city, student_state, student_zip, student_phone_number) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
@@ -111,13 +130,6 @@ public class DatabaseManager {
             psInsert.setString(8, newStudent.getPhoneNumber());
             System.out.println(psInsert);
             psInsert.executeUpdate();
-
-//        String addDataToStudentTable = "INSERT INTO " + STUDENT_TABLE_NAME + " (" + S_FNAME + ", " + S_LNAME + ", " + S_EMAIL
-//            + ", " + S_ADDRESS + ", " + S_CITY + ", " + S_STATE + ", " + S_ZIP + ", " + S_PHONE_NUMBER + ") VALUES (" + newStudent.getFirstName() + ", " +
-//            newStudent.getLastName() + ", " + newStudent.getEmail() + ", " + newStudent.getStreetAddress() + ", " +
-//            newStudent.getCity() + ", " + newStudent.getState() + ", " + newStudent.getZipCode() + ", " + newStudent.getPhoneNumber() + ")";
-//            System.out.println(addDataToStudentTable);
-//        statement.executeUpdate(addDataToStudentTable);
 
             System.out.println("You just created a student");
         }
