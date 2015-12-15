@@ -14,10 +14,13 @@ public class ZipCodeWorker extends SwingWorker<Document, Void>{
     private String url;
     private static ArrayList<String> allZipCodesReturned;
 
+    ZipCodesFetchedListener notifyMeWhenDone;
+
     //Constructor - sends data to the worker
-    public ZipCodeWorker(String zip, String miles) {
+    public ZipCodeWorker(String zip, String miles, ZipCodesFetchedListener notifyMe) {
         this.zip = zip;
         this.miles = miles;
+        this.notifyMeWhenDone = notifyMe;
         this.url = "https://www.zipwise.com/webservices/radius.php?" +
                 "key=nton18af45ivozgj&zip=" + zip + "&radius=" + miles + "&format=xml";
     }
@@ -32,6 +35,7 @@ public class ZipCodeWorker extends SwingWorker<Document, Void>{
         try {
             System.out.println("Background");
             URL urlObject = new URL(url);
+            System.out.println(url);
             DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document xmlDoc = builder.parse(urlObject.openStream());
             return xmlDoc;
@@ -57,6 +61,7 @@ public class ZipCodeWorker extends SwingWorker<Document, Void>{
                 System.out.println(zipTexts.getLength() + " zip codes were returned");
 
                 //put all the zip codes returned into an arraylist
+                //you mean an array?
 
                 ZipCodeListBean.zipCodeList = new String[zipTexts.getLength()];
                 //ZipCodeListBean.zipCodeList = new ArrayList<String>();
@@ -83,7 +88,12 @@ public class ZipCodeWorker extends SwingWorker<Document, Void>{
             //Again, many things can go wrong here during parsing the XML, such as unexpected XML structure
             System.out.println("Parsing XML failed with error " + e);
         }
-        DatabaseManager.lessonsWithinACertainRadius();
+
+        //Logically, this should not make database calls. All this should do is tell something - like a controller -
+        //that it has found zip codes.
+        //DatabaseManager.lessonsWithinACertainRadius();
+
+        notifyMeWhenDone.zipCodesFetched(ZipCodeListBean.zipCodeList);
     }
 
     public static ArrayList<String> getAllZipCodesReturned() {
