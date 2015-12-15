@@ -9,7 +9,7 @@ import java.sql.*;
 public class DatabaseManager {
 
     private static String DB_CONNECTION_URL = "jdbc:mysql://localhost:3306/";
-    private static final String DB_NAME = "notatest";
+    private static final String DB_NAME = "musiclessons";
     private static final String USER = "cameo";
     private static final String PASS = "chicagobears";
 
@@ -31,9 +31,9 @@ public class DatabaseManager {
     public final static String AMOUNT_PAID = "amount_paid";
 
     public DatabaseManager(){
-        //create the database if it doesn't exist
-        System.out.println("Go straight to set up");
-            DatabaseManager.setup();
+
+        System.out.println("Went straight to set up");
+        DatabaseManager.setup();
     }
 
     //setup() method taken from Clara's MovieRatings program
@@ -48,8 +48,8 @@ public class DatabaseManager {
                 return false;
             }
 
-            //conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
-            conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASS);
+            conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
+            //conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASS);
             String createDatabase = "CREATE DATABASE IF NOT EXISTS " + DB_NAME;
             statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             statement.executeUpdate(createDatabase);
@@ -57,8 +57,7 @@ public class DatabaseManager {
             String useDatabase = "USE " + DB_NAME;
             statement.execute(useDatabase);
 
-            System.out.println("Create the table!");
-
+            //create student demographics table
             String createTableSQL = "CREATE TABLE IF NOT EXISTS student_demo (" + PK_COLUMN + " int NOT NULL AUTO_INCREMENT, "
                     + S_FNAME + " varchar(30), " + S_LNAME + " varchar(50), " + S_EMAIL + " varchar(50), " + S_ADDRESS
                     + " varchar(50), " + S_CITY +  " varchar(30), " + S_STATE + " char(2), " + S_ZIP + " varchar(10), "
@@ -66,6 +65,7 @@ public class DatabaseManager {
 
             statement.executeUpdate(createTableSQL);
             System.out.println("Created student_demo table if it didn't already exist");
+            conn.close();
 
         }
         catch (Exception e) {
@@ -97,16 +97,37 @@ public class DatabaseManager {
     }
     public static ResultSet createInstrumentComboBox() {
         try {
-            String instrumentComboBoxQuery = "select distinct instrument from instructor_instrument;";
+            conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASS);
+            statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+            String instrumentComboBoxQuery = "select DISTINCT instrument from musiclessons.instructor_instrument;";
             ResultSet rs = statement.executeQuery(instrumentComboBoxQuery);
             return rs;
-        }
-        catch (SQLException sqle) {
+        } catch (SQLException sqle) {
             System.out.println("Error getting instruments");
             System.out.println(sqle);
             //TODO When do we want to print out stack trace?
             sqle.printStackTrace();
             //TODO what should this return?
+            return null;
+        }
+    }
+
+    public static ResultSet lessonsWithinACertainRadius(){
+
+        try {
+            //String instrument = "voice"; //TODO get data from boxes
+            String instrument = instrumentComboBox.getSelectedItem();
+            String zip = "55426";
+            conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASS);
+            statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+            String lessonsWithin = "select firstName, lastName, city, state, hourlyRate from instructor, instructor_instrument, " +
+                    "instrument where instructor.instructorID = instructor_instrument.instructorID and instructor_instrument.instrument = instrument.instrument" +
+                    " and instrument.instrument = " + instrument + "and zip = " + zip;
+            ResultSet rs = statement.executeQuery(lessonsWithin);
+            return rs;
+        } catch (SQLException sqle){
+            System.out.println("Error obtaining music instructors in the vicinity you requested");
             return null;
         }
     }

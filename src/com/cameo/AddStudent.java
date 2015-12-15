@@ -28,7 +28,7 @@ public class AddStudent extends JFrame{
         pack();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-        setSize(new Dimension (250, 350));
+        setSize(new Dimension (300, 450));
 
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -47,10 +47,11 @@ public class AddStudent extends JFrame{
             databaseManager.saveNew(newStudent);
             }
         });
+
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO code to close
+                System.exit(0);
             }
         });
     }
