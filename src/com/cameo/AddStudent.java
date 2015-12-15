@@ -43,8 +43,11 @@ public class AddStudent extends JFrame{
             String sZip = studentZipCodeTextField.getText();
 
             Student newStudent = new Student(sFirstName, sLastName, sEmail, sStreetAdd, sCity, sState, sZip, sPhoneNumber);
-            DatabaseManager databaseManager = new DatabaseManager();
-            databaseManager.saveNew(newStudent);
+
+            DatabaseManager.setup(); //This line is only in here to for testing
+            DatabaseManager.createStudentTable();
+            DatabaseManager.saveNewStudent(newStudent);
+            DatabaseManager.shutdown();
             }
         });
 

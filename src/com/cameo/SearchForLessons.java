@@ -9,6 +9,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 /**
  * Created by Cameo on 12/7/2015.
@@ -28,7 +29,8 @@ public class SearchForLessons extends JFrame implements WindowListener {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
         //setSize(new Dimension(450, 250));
-        //DatabaseManager.setup();
+
+        DatabaseManager.setup();
 
         ResultSet rs = DatabaseManager.createInstrumentComboBox();
         System.out.println(rs.toString());
@@ -45,12 +47,14 @@ public class SearchForLessons extends JFrame implements WindowListener {
         }
 
         searchForLessonsNearButton.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent e) {
-
-            String whichInstrument = (String) instrumentComboBox.getSelectedItem();
+            //when this button is clicked
 
             String zip = searchZipTextField.getText();
+            String milesRadius = radiusTextField.getText();
+
             try {
                 if (zip.length()!=5){
                     System.out.println("Enter a valid five digit zip code");
@@ -58,30 +62,27 @@ public class SearchForLessons extends JFrame implements WindowListener {
             } catch (Exception ex){
                 ex.toString();
             }
-            String milesRadius = radiusTextField.getText();
-            //TODO data validation-only numbers
 
             ZipCodeWorker doTheSearch = new ZipCodeWorker(zip, milesRadius);
             doTheSearch.execute();
 
-            DatabaseManager databaseManager = new DatabaseManager();
-//            for (String zipCode : ZipCodeListBean.zipCodeList) {
-//                System.out.println(zipCode);
+            String whichInstrument = (String) instrumentComboBox.getSelectedItem();
+
+//            try {
+//                while (ZipCodeWorker.getAllZipCodesReturned().isEmpty()){
+//                    wait();}
+//            } catch (InterruptedException ie){
+//                ie.toString();
 //            }
+            try {
+                wait(20000);
+                for (String zipCode : ZipCodeListBean.zipCodeList){
+                    System.out.println(zipCode);
+                } } catch (InterruptedException ie) {
+                ie.toString();
+            }
 
-            //TODO What the heck am I doing?!
-                //trying to populate list/table/etc with result list of lessonsWithinACertainRadius
-                // public final InstructorsToChooseFromModel instructorsToChooseFromModel;
-//            ResultSet rs2 = DatabaseManager.lessonsWithinACertainRadius();
-//                try {
-//                    if (instructorsToChooseFromModel == null){
-//                    }
-//                }
-//                catch (SQLException sqle){
-//                    System.out.println(sqle.toString());;
-//                    System.out.println("Error!!");
-//                }
-
+        //TODO populate table with result set of lessonsWithinACertainRadius()
 
             }
         });

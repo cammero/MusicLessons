@@ -8,13 +8,19 @@ import java.sql.*;
  */
 public class DatabaseManager {
 
-    private static String DB_CONNECTION_URL = "jdbc:mysql://localhost:3306/";
+    private static final String DB_CONNECTION_URL = "jdbc:mysql://localhost:3306/";
     private static final String DB_NAME = "musiclessons";
     private static final String USER = "cameo";
     private static final String PASS = "chicagobears";
 
-    static Statement statement = null;
+
+
     static Connection conn = null;
+    //Use this statement whenever you want to connect to DB?
+    static Statement statement = null;
+    static Statement createStudentDemoTableStatement = null;
+
+    //TODO new resultset every time I need one
     static ResultSet rs = null;
 
     //Student Demographics table
@@ -48,30 +54,37 @@ public class DatabaseManager {
                 return false;
             }
 
-            conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
-            //conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASS);
+            //conn = DriverManager.getConnection(DB_CONNECTION_URL + DB_NAME, USER, PASS);
+            conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASS);
+
             String createDatabase = "CREATE DATABASE IF NOT EXISTS " + DB_NAME;
             statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             statement.executeUpdate(createDatabase);
+
             System.out.println("Got connected");
+
             String useDatabase = "USE " + DB_NAME;
             statement.execute(useDatabase);
-
-            //create student demographics table
-            String createTableSQL = "CREATE TABLE IF NOT EXISTS student_demo (" + PK_COLUMN + " int NOT NULL AUTO_INCREMENT, "
-                    + S_FNAME + " varchar(30), " + S_LNAME + " varchar(50), " + S_EMAIL + " varchar(50), " + S_ADDRESS
-                    + " varchar(50), " + S_CITY +  " varchar(30), " + S_STATE + " char(2), " + S_ZIP + " varchar(10), "
-                    + S_PHONE_NUMBER + " varchar(12), " + AMOUNT_PAID + " double, PRIMARY KEY(" + PK_COLUMN + "))";
-
-            statement.executeUpdate(createTableSQL);
-            System.out.println("Created student_demo table if it didn't already exist");
-            conn.close();
-
         }
         catch (Exception e) {
             return false;
         }
         return true;
+    }
+
+    public static void createStudentTable () {
+        //create student demographics table
+        try {
+            String createTableSQL = "CREATE TABLE IF NOT EXISTS student_demo (" + PK_COLUMN + " int NOT NULL AUTO_INCREMENT, "
+                    + S_FNAME + " varchar(30), " + S_LNAME + " varchar(50), " + S_EMAIL + " varchar(50), " + S_ADDRESS
+                    + " varchar(50), " + S_CITY + " varchar(30), " + S_STATE + " char(2), " + S_ZIP + " varchar(10), "
+                    + S_PHONE_NUMBER + " varchar(12), " + AMOUNT_PAID + " double, PRIMARY KEY(" + PK_COLUMN + "))";
+
+            statement.executeUpdate(createTableSQL);
+            System.out.println("Created student_demo table if it didn't already exist");
+        } catch (SQLException sqle){
+            System.out.println(sqle.toString());
+        }
     }
 
     public static boolean studentDemoTableExists() throws SQLException {
@@ -82,29 +95,16 @@ public class DatabaseManager {
             return true;
         }
         return false;
-
-//        try{
-//            System.out.println("Checking to see if the table is present");
-//            ResultSet tableRS = statement.executeQuery(checkTablePresentQuery);
-//            if (tableRS.next()) {
-//                return true;
-//            }
-//            return false;
-//        } catch (SQLException se) {
-//            se.printStackTrace();
-//        }
-//        return false;
     }
+
     public static ResultSet createInstrumentComboBox() {
         try {
-            conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASS);
-            statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
             String instrumentComboBoxQuery = "select DISTINCT instrument from musiclessons.instructor_instrument;";
             ResultSet rs = statement.executeQuery(instrumentComboBoxQuery);
             return rs;
         } catch (SQLException sqle) {
             System.out.println("Error getting instruments");
-            System.out.println(sqle);
+            System.out.println(sqle.toString());
             //TODO When do we want to print out stack trace?
             sqle.printStackTrace();
             //TODO what should this return?
@@ -115,15 +115,14 @@ public class DatabaseManager {
     public static ResultSet lessonsWithinACertainRadius(){
 
         try {
-            //String instrument = "voice"; //TODO get data from boxes
-            String instrument = instrumentComboBox.getSelectedItem();
+            String instrument = "voice"; //Hard coded for testing
+            //String instrument = instrumentComboBox.getSelectedItem();
             String zip = "55426";
-            conn = DriverManager.getConnection(DB_CONNECTION_URL, USER, PASS);
-            statement = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
 
             String lessonsWithin = "select firstName, lastName, city, state, hourlyRate from instructor, instructor_instrument, " +
                     "instrument where instructor.instructorID = instructor_instrument.instructorID and instructor_instrument.instrument = instrument.instrument" +
-                    " and instrument.instrument = " + instrument + "and zip = " + zip;
+                    " and instrument.instrument = '" + instrument + "' and zip = " + zip;
+
             ResultSet rs = statement.executeQuery(lessonsWithin);
             return rs;
         } catch (SQLException sqle){
@@ -132,7 +131,7 @@ public class DatabaseManager {
         }
     }
 
-    public void saveNew(Student newStudent){
+    public static void saveNewStudent(Student newStudent){
         try {
             //prepared statement help from Week 12 slides
             //statement adds student information to student_demo table in database

@@ -12,6 +12,7 @@ public class ZipCodeWorker extends SwingWorker<Document, Void>{
     private String zip;
     private String miles;
     private String url;
+    private static ArrayList<String> allZipCodesReturned;
 
     //Constructor - sends data to the worker
     public ZipCodeWorker(String zip, String miles) {
@@ -43,6 +44,8 @@ public class ZipCodeWorker extends SwingWorker<Document, Void>{
         }
     }
 
+
+
     @Override
     protected void done() {
         try {
@@ -50,19 +53,26 @@ public class ZipCodeWorker extends SwingWorker<Document, Void>{
             Document xmlZipInfo = get(); //get() fetches what's returned from doInBackground
             System.out.println(xmlZipInfo);
             if (xmlZipInfo != null) {
-                System.out.println("Here are the zip codes within the radius");
                 NodeList zipTexts = xmlZipInfo.getElementsByTagName("zip");
-                System.out.println(zipTexts.getLength());
+                System.out.println(zipTexts.getLength() + " zip codes were returned");
 
                 //put all the zip codes returned into an arraylist
-                ZipCodeListBean.zipCodeList = new ArrayList<String>();
+
+                ZipCodeListBean.zipCodeList = new String[zipTexts.getLength()];
+                //ZipCodeListBean.zipCodeList = new ArrayList<String>();
                 for (int x = 0; x < zipTexts.getLength(); x++) {
                     Node node = zipTexts.item(x);
                     if (node.getNodeType() == Node.ELEMENT_NODE) {
                         Element element = (Element) node;
                         String depText = element.getFirstChild().getNodeValue();
-                        ZipCodeListBean.zipCodeList.add(depText);
+                        ZipCodeListBean.zipCodeList[x] = depText;
+
+                        //ZipCodeListBean.zipCodeList.add(depText); Matt Rowe's idea
+                        //allZipCodesReturned.add(depText);
                     }
+                }
+                for (String zipCode : ZipCodeListBean.zipCodeList){
+                    System.out.println(zipCode);
                 }
 
             } else {
@@ -74,5 +84,9 @@ public class ZipCodeWorker extends SwingWorker<Document, Void>{
             System.out.println("Parsing XML failed with error " + e);
         }
         DatabaseManager.lessonsWithinACertainRadius();
+    }
+
+    public static ArrayList<String> getAllZipCodesReturned() {
+        return allZipCodesReturned;
     }
 }
