@@ -1,7 +1,9 @@
 package com.cameo;
 import com.sun.org.apache.xpath.internal.SourceTree;
 
+import java.io.StringBufferInputStream;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  * Created by Cameo on 12/5/2015.
@@ -22,6 +24,7 @@ public class DatabaseManager {
 
     //TODO new resultset every time I need one
     static ResultSet rs = null;
+    static ResultSet findInst = null;
 
     //Student Demographics table
     public final static String STUDENT_TABLE_NAME = "student_demo";
@@ -35,6 +38,8 @@ public class DatabaseManager {
     public final static String S_ZIP = "student_zip";
     public final static String S_PHONE_NUMBER = "student_phone_number";
     public final static String AMOUNT_PAID = "amount_paid";
+    public final static String USERNAME = "username";
+    public final static String PASSWORD = "password";
 
     public DatabaseManager(){
 
@@ -78,7 +83,8 @@ public class DatabaseManager {
             String createTableSQL = "CREATE TABLE IF NOT EXISTS student_demo (" + PK_COLUMN + " int NOT NULL AUTO_INCREMENT, "
                     + S_FNAME + " varchar(30), " + S_LNAME + " varchar(50), " + S_EMAIL + " varchar(50), " + S_ADDRESS
                     + " varchar(50), " + S_CITY + " varchar(30), " + S_STATE + " char(2), " + S_ZIP + " varchar(10), "
-                    + S_PHONE_NUMBER + " varchar(12), " + AMOUNT_PAID + " double, PRIMARY KEY(" + PK_COLUMN + "))";
+                    + S_PHONE_NUMBER + " varchar(12), " + AMOUNT_PAID + " double, " + USERNAME + " varchar(30) " +
+                    PASSWORD + " varchar(30), PRIMARY KEY(" + PK_COLUMN + "))";
 
             statement.executeUpdate(createTableSQL);
             System.out.println("Created student_demo table if it didn't already exist");
@@ -112,19 +118,31 @@ public class DatabaseManager {
         }
     }
 
-    public static ResultSet lessonsWithinACertainRadius(){
+    public static ArrayList<String> lessonsWithinACertainRadius(String instrument, String[] zipCodeSearchArray){
 
         try {
-            String instrument = "voice"; //Hard coded for testing
-            //String instrument = instrumentComboBox.getSelectedItem();
-            String zip = "55426";
+            ArrayList<String> instructorRSArray = new ArrayList<String>();
+            //String zip = "55426";
+            for (String zip : zipCodeSearchArray) {
 
-            String lessonsWithin = "select firstName, lastName, city, state, hourlyRate from instructor, instructor_instrument, " +
-                    "instrument where instructor.instructorID = instructor_instrument.instructorID and instructor_instrument.instrument = instrument.instrument" +
-                    " and instrument.instrument = '" + instrument + "' and zip = " + zip;
+                String lessonsWithinRadius = "select firstName, lastName, city, state, hourlyRate from instructor, instructor_instrument " +
+                        "where instructor.instructorID = instructor_instrument.instructorID and instrument ='" + instrument + "' and zip = " + zip;
 
-            ResultSet rs = statement.executeQuery(lessonsWithin);
-            return rs;
+                findInst = statement.executeQuery(lessonsWithinRadius);
+
+                while (findInst.next()) {
+                String firstName = findInst.getString("firstName");
+                String lastName = findInst.getString("lastName");
+                String city = findInst.getString("city");
+                String state = findInst.getString("state");
+                Double rate = findInst.getDouble("hourlyRate");
+                String lineForJList = firstName + " " + lastName + " " + city + "," + state + " $" + rate + " per hour";
+                    System.out.println(lineForJList);
+                    instructorRSArray.add(lineForJList);
+                }
+            }
+            System.out.println(instructorRSArray.size());
+            return instructorRSArray;
         } catch (SQLException sqle){
             System.out.println("Error obtaining music instructors in the vicinity you requested");
             return null;
@@ -136,8 +154,8 @@ public class DatabaseManager {
             //prepared statement help from Week 12 slides
             //statement adds student information to student_demo table in database
             String addDataToStudentTable = "INSERT INTO student_demo (student_first_name, student_last_name, student_email, "
-                    + "student_street_address, student_city, student_state, student_zip, student_phone_number) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+                    + "student_street_address, student_city, student_state, student_zip, student_phone_number, username, password) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
             System.out.println(addDataToStudentTable);
             PreparedStatement psInsert = conn.prepareStatement(addDataToStudentTable);
             psInsert.setString(1, newStudent.getFirstName());
@@ -148,6 +166,8 @@ public class DatabaseManager {
             psInsert.setString(6, newStudent.getState());
             psInsert.setString(7, newStudent.getZipCode());
             psInsert.setString(8, newStudent.getPhoneNumber());
+            psInsert.setString(9, newStudent.getUsername());
+            psInsert.setString(10, newStudent.getPassword());
             System.out.println(psInsert);
             psInsert.executeUpdate();
 

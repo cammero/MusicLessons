@@ -20,6 +20,8 @@ public class AddStudent extends JFrame{
     private JPanel rootPanel;
     private JTextField studentCityTextField;
     private JButton quitButton;
+    private JTextField usernameTextField;
+    private JPasswordField passwordField1;
 
 
     public AddStudent(){
@@ -41,8 +43,10 @@ public class AddStudent extends JFrame{
             String sCity = studentCityTextField.getText();
             String sState = state.getSelectedItem().toString();
             String sZip = studentZipCodeTextField.getText();
+            String sUsername = usernameTextField.getText();
+            String sPassword = passwordField1.getText();
 
-            Student newStudent = new Student(sFirstName, sLastName, sEmail, sStreetAdd, sCity, sState, sZip, sPhoneNumber);
+            Student newStudent = new Student(sFirstName, sLastName, sEmail, sStreetAdd, sCity, sState, sZip, sPhoneNumber, sUsername, sPassword);
 
             DatabaseManager.setup(); //This line is only in here to for testing
             DatabaseManager.createStudentTable();

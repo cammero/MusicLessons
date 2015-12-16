@@ -22,7 +22,10 @@ public class ZipCodeWorker extends SwingWorker<Document, Void>{
         this.miles = miles;
         this.notifyMeWhenDone = notifyMe;
         this.url = "https://www.zipwise.com/webservices/radius.php?" +
-                "key=nton18af45ivozgj&zip=" + zip + "&radius=" + miles + "&format=xml";
+                "key=56wga97sk2vwkjda&zip=" + zip + "&radius=" + miles + "&format=xml";
+        //the API key for cameo.hansell@minneapolis.edu
+//        this.url = "https://www.zipwise.com/webservices/radius.php?" +
+//                "key=nton18af45ivozgj&zip=" + zip + "&radius=" + miles + "&format=xml";
     }
 
     public void setZip(String zip) { this.zip = zip; }
@@ -60,8 +63,7 @@ public class ZipCodeWorker extends SwingWorker<Document, Void>{
                 NodeList zipTexts = xmlZipInfo.getElementsByTagName("zip");
                 System.out.println(zipTexts.getLength() + " zip codes were returned");
 
-                //put all the zip codes returned into an arraylist
-                //you mean an array?
+                //put all the zip codes returned into an array
 
                 ZipCodeListBean.zipCodeList = new String[zipTexts.getLength()];
                 //ZipCodeListBean.zipCodeList = new ArrayList<String>();
@@ -72,12 +74,9 @@ public class ZipCodeWorker extends SwingWorker<Document, Void>{
                         String depText = element.getFirstChild().getNodeValue();
                         ZipCodeListBean.zipCodeList[x] = depText;
 
-                        //ZipCodeListBean.zipCodeList.add(depText); Matt Rowe's idea
+                        //ZipCodeListBean.zipCodeList.add(depText); Bean was Matt Rowe's idea
                         //allZipCodesReturned.add(depText);
                     }
-                }
-                for (String zipCode : ZipCodeListBean.zipCodeList){
-                    System.out.println(zipCode);
                 }
 
             } else {
@@ -91,7 +90,6 @@ public class ZipCodeWorker extends SwingWorker<Document, Void>{
 
         //Logically, this should not make database calls. All this should do is tell something - like a controller -
         //that it has found zip codes.
-        //DatabaseManager.lessonsWithinACertainRadius();
 
         notifyMeWhenDone.zipCodesFetched(ZipCodeListBean.zipCodeList);
     }
