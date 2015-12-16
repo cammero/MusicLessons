@@ -1,6 +1,7 @@
 package com.cameo;
 import com.sun.org.apache.xpath.internal.SourceTree;
 
+import javax.swing.*;
 import java.io.StringBufferInputStream;
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,10 +22,12 @@ public class DatabaseManager {
     //Use this statement whenever you want to connect to DB?
     static Statement statement = null;
     static Statement createStudentDemoTableStatement = null;
+    static Statement authStatement = null;
 
     //TODO new resultset every time I need one
     static ResultSet rs = null;
     static ResultSet findInst = null;
+    static ResultSet authRS = null;
 
     //Student Demographics table
     public final static String STUDENT_TABLE_NAME = "student_demo";
@@ -122,7 +125,6 @@ public class DatabaseManager {
 
         try {
             ArrayList<String> instructorRSArray = new ArrayList<String>();
-            //String zip = "55426";
             for (String zip : zipCodeSearchArray) {
 
                 String lessonsWithinRadius = "select firstName, lastName, city, state, hourlyRate from instructor, instructor_instrument " +
@@ -147,6 +149,23 @@ public class DatabaseManager {
             System.out.println("Error obtaining music instructors in the vicinity you requested");
             return null;
         }
+    }
+
+    public static boolean authentication(String username, String password) {
+        try {
+            String auth = "select username from student_demo where username = '" + username + "' and password = '" + password + "';";
+            authRS = statement.executeQuery(auth);
+            if (authRS.wasNull()){
+                return false;
+            }
+            else{
+                return true;
+            }
+        } catch (SQLException sqle) {
+            System.out.println("Error verifying username and password");
+            return false;
+        }
+
     }
 
     public static void saveNewStudent(Student newStudent){

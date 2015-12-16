@@ -7,7 +7,6 @@ public class Main {
     public static void main(String[] args) {
         DatabaseManager.setup();
         SearchForLessons searchForLessons = new SearchForLessons();
-        //LogIn logIn = new LogIn();
         //DatabaseManager.shutdown();
     }
 

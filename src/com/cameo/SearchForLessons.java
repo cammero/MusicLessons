@@ -81,7 +81,8 @@ public class SearchForLessons extends JFrame implements WindowListener, ZipCodes
 
                 //TODO use popup?
                 //TODO Query username and password, if match add class to student's schedule
-                LogInPopUp dialog = new LogInPopUp();
+                //LogInPopUp dialog = new LogInPopUp();
+                LogIn logIn = new LogIn();
                 Student.register(listOfInstructorsJList.getSelectedValue());
             }
         });

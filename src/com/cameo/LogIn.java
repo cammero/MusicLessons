@@ -25,8 +25,15 @@ public class LogIn extends JFrame{
         logInButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO login code validation
-                //TODO add class to student's classlist OR go back to register screen?
+                String username = userNameTextField.getText();
+                String password = passwordTextField.getText();
+                boolean valid = DatabaseManager.authentication(username, password);
+                if (!valid){
+                    JOptionPane.showMessageDialog(null, "You have not entered a valid username and/or password.");
+                }
+                else {
+                    //TODO add class to student's classlist
+                }
             }
         });
     }
