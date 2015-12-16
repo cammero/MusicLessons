@@ -80,4 +80,8 @@ public class Student {
 
     public String getPassword() {return password;}
     public void setPassword(String password) {this.password = password;}
+
+    public static void register(String selectedValue) {
+        //TODO call query to add string to table Registration (contains studentID and string)
+    }
 }

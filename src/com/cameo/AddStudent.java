@@ -30,7 +30,7 @@ public class AddStudent extends JFrame{
         pack();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-        setSize(new Dimension (300, 450));
+        setSize(new Dimension (600, 450));
 
         submitButton.addActionListener(new ActionListener() {
             @Override
@@ -48,7 +48,6 @@ public class AddStudent extends JFrame{
 
             Student newStudent = new Student(sFirstName, sLastName, sEmail, sStreetAdd, sCity, sState, sZip, sPhoneNumber, sUsername, sPassword);
 
-            DatabaseManager.setup(); //This line is only in here to for testing
             DatabaseManager.createStudentTable();
             DatabaseManager.saveNewStudent(newStudent);
             DatabaseManager.shutdown();

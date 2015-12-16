@@ -83,7 +83,7 @@ public class DatabaseManager {
             String createTableSQL = "CREATE TABLE IF NOT EXISTS student_demo (" + PK_COLUMN + " int NOT NULL AUTO_INCREMENT, "
                     + S_FNAME + " varchar(30), " + S_LNAME + " varchar(50), " + S_EMAIL + " varchar(50), " + S_ADDRESS
                     + " varchar(50), " + S_CITY + " varchar(30), " + S_STATE + " char(2), " + S_ZIP + " varchar(10), "
-                    + S_PHONE_NUMBER + " varchar(12), " + AMOUNT_PAID + " double, " + USERNAME + " varchar(30) " +
+                    + S_PHONE_NUMBER + " varchar(12), " + AMOUNT_PAID + " double, " + USERNAME + " varchar(30), " +
                     PASSWORD + " varchar(30), PRIMARY KEY(" + PK_COLUMN + "))";
 
             statement.executeUpdate(createTableSQL);
