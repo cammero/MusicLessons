@@ -14,7 +14,7 @@ import java.util.Scanner;
 /**
  * Created by Cameo on 12/7/2015.
  */
-public class SearchForLessons extends JFrame implements WindowListener {
+public class SearchForLessons extends JFrame implements WindowListener, ZipCodesFetchedListener {
     private JButton searchForLessonsNearButton;
     private JTextField searchZipTextField;
     private JPanel rootPanel2;
@@ -32,7 +32,7 @@ public class SearchForLessons extends JFrame implements WindowListener {
 
         DatabaseManager.setup();
 
-        ResultSet rs = DatabaseManager.createInstrumentComboBox();
+       /* ResultSet rs = DatabaseManager.createInstrumentComboBox();
         System.out.println(rs.toString());
         try {
             while (rs.next()) {
@@ -44,7 +44,7 @@ public class SearchForLessons extends JFrame implements WindowListener {
         catch (SQLException sqle){
             System.out.println(sqle.toString());;
             System.out.println("Error getting types of lessons offered");
-        }
+        }*/
 
         searchForLessonsNearButton.addActionListener(new ActionListener() {
 
@@ -63,9 +63,11 @@ public class SearchForLessons extends JFrame implements WindowListener {
                 ex.toString();
             }
 
-            ZipCodeWorker doTheSearch = new ZipCodeWorker(zip, milesRadius);
+            ZipCodeWorker doTheSearch = new ZipCodeWorker(zip, milesRadius, SearchForLessons.this);
             doTheSearch.execute();
 
+            //You might need to move this to the zipCodesFetched method too? This depends on knowing zip codes?
+        
             String whichInstrument = (String) instrumentComboBox.getSelectedItem();
 
 //            try {
@@ -74,19 +76,42 @@ public class SearchForLessons extends JFrame implements WindowListener {
 //            } catch (InterruptedException ie){
 //                ie.toString();
 //            }
-            try {
-                wait(20000);
+
+                /*try {
+                wait(1);
                 for (String zipCode : ZipCodeListBean.zipCodeList){
                     System.out.println(zipCode);
                 } } catch (InterruptedException ie) {
                 ie.toString();
-            }
+            }*/
+
 
         //TODO populate table with result set of lessonsWithinACertainRadius()
 
             }
         });
     }
+
+
+    //Interface method
+    @Override
+    public void zipCodesFetched(String[] zipcodes) {
+
+        //This is where you should make the database call
+        //testing to make sure zipcodes are accessible here...
+
+        System.out.println("In the GUI, and have been notified that zip codes are available");
+        for (String zipCode : ZipCodeListBean.zipCodeList){
+            System.out.println(zipCode);
+        }
+
+        //DatabaseManager.lessonsWithinACertainRadius();
+        //I don't have your database set up, so the above call fails - but at this point you
+        // have the zipcode info and can use it in your DB calls.
+
+    }
+
+
 
     @Override
     public void windowClosing(WindowEvent e) {
@@ -109,4 +134,6 @@ public class SearchForLessons extends JFrame implements WindowListener {
 
     @Override
     public void windowDeactivated(WindowEvent e) {}
+
+
 }
