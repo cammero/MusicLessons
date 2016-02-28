@@ -13,7 +13,11 @@ import java.util.Vector;
 
 /**
  * Created by Cameo on 12/7/2015.
+ *
+ * This form allows a user to select an instrument from a dropdown, enter their zip code and the radius in miles that
+ * they are willing to travel to take music lessons. It returns all instructors within that range.
  */
+
 public class SearchForLessons extends JFrame implements WindowListener, ZipCodesFetchedListener {
     private JButton searchForLessonsNearButton;
     private JTextField searchZipTextField;
@@ -30,6 +34,7 @@ public class SearchForLessons extends JFrame implements WindowListener, ZipCodes
 
     DefaultListModel<String> instructorListModel;
 
+    //First GUI screen
     public SearchForLessons () {
         super("Search for music lessons");
         setContentPane(rootPanel2);
@@ -38,8 +43,9 @@ public class SearchForLessons extends JFrame implements WindowListener, ZipCodes
         setVisible(true);
         setSize(new Dimension(600, 450));
 
+        //Create dropdown of all types of lessons offered. Searched through database each time the program is run, so
+        // the list will be accurate.
         ResultSet rs = DatabaseManager.createInstrumentComboBox();
-        //System.out.println(rs.toString());
         try {
             while (rs.next()) {
                 //saw this on youtube https://www.youtube.com/watch?v=lrvm5B1PcO0
@@ -52,6 +58,8 @@ public class SearchForLessons extends JFrame implements WindowListener, ZipCodes
             System.out.println("Error getting types of lessons offered");
         }
 
+        //This button gathers the parameters necessary to find any zip codes of instructors that fall within the radius
+        //specified by the user.
         searchForLessonsNearButton.addActionListener(new ActionListener() {
 
             @Override
@@ -59,33 +67,44 @@ public class SearchForLessons extends JFrame implements WindowListener, ZipCodes
 
             zip = searchZipTextField.getText();
             milesRadius = radiusTextField.getText();
-            //String whichInstrument = (String) instrumentComboBox.getSelectedItem();
             instrumentSelected = instrumentComboBox.getSelectedItem().toString();
 
             try {
-                if (zip.length()!=5){
-                    System.out.println("Enter a valid five digit zip code");
+                if (zip.isEmpty() || zip.length()!= 5){
+                    JOptionPane.showMessageDialog(null, "You have not entered a valid five digit zip code. Please try again.");
+                }
+                else if (milesRadius.isEmpty() || Integer.parseInt(milesRadius) < 0){
+                    JOptionPane.showMessageDialog(null, "You have not entered a valid number of miles. Please try again.");
+                }
+                else {
+                    //If the zip code and mile parameters are valid, the search for the zip codes that are within that radius
+                    //will be executed by the API call.
+                    ZipCodeWorker doTheSearch = new ZipCodeWorker(zip, milesRadius, SearchForLessons.this);
+                    doTheSearch.execute();
                 }
             } catch (Exception ex){
                 ex.toString();
             }
 
-            ZipCodeWorker doTheSearch = new ZipCodeWorker(zip, milesRadius, SearchForLessons.this);
-            doTheSearch.execute();
-
             }
         });
+
+        //If student already has an account, they click this. LogIn information is required. (Not currently functioning.)
         registerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                //TODO use popup?
                 //TODO Query username and password, if match add class to student's schedule
+                //Use the popup?
                 //LogInPopUp dialog = new LogInPopUp();
-                LogIn logIn = new LogIn();
+                LogIn logIn = new LogIn(); //Doesn't currently work
+
+                //Add selected course to student lessonsScheduled ArrayList (Not currently functioning.)
                 Student.register(listOfInstructorsJList.getSelectedValue());
             }
         });
+
+        //If the user does not have an account, this button brings up a form for them to create one.
         createNewAccountButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -94,7 +113,6 @@ public class SearchForLessons extends JFrame implements WindowListener, ZipCodes
             }
         });
     }
-
 
     //Interface method
     @Override
@@ -107,12 +125,12 @@ public class SearchForLessons extends JFrame implements WindowListener, ZipCodes
 
         ArrayList<String> lessonChoices = DatabaseManager.lessonsWithinACertainRadius(instrumentSelected, ZipCodeListBean.zipCodeList);
 
-        //next 3 lines of code obtained from Clara's LogList program
+        //next 3 lines of code mirrored from Clara's LogList program
         instructorListModel = new DefaultListModel<String>();
         listOfInstructorsJList.setModel(instructorListModel);
         listOfInstructorsJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-
+        //Adds each instructor to the list
         for (String instructor : lessonChoices) {
             instructorListModel.addElement(instructor);
         }

@@ -32,6 +32,7 @@ public class Instructor {
         this.hourlyRate = hourlyRate;
     }
 
+    //Earnings to be calculated in version 2
     public double addToEarnings (double costOfClass){
         //instructor gets paid 60% of what the lesson costs
         earnings += costOfClass*.6;

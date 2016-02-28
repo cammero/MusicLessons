@@ -3,6 +3,9 @@ package com.cameo;
 import javax.swing.*;
 import java.awt.event.*;
 
+//This class currently is not in use. I was trying out extending JDialog and utilizing some of the built in features.
+//I still haven't decided whether to use the LogInPopUp class or the LogIn class in version 2.
+
 public class LogInPopUp extends JDialog {
     private JPanel contentPane;
     private JButton buttonLogin;

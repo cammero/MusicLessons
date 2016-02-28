@@ -4,7 +4,10 @@
     <constraints>
       <xy x="20" y="20" width="644" height="400"/>
     </constraints>
-    <properties/>
+    <properties>
+      <font/>
+      <foreground color="-11075805"/>
+    </properties>
     <border type="none"/>
     <children>
       <component id="b62e5" class="javax.swing.JButton" binding="searchForLessonsNearButton" default-binding="true">

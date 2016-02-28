@@ -1,13 +1,12 @@
 package com.cameo;
-import com.sun.org.apache.xpath.internal.SourceTree;
 
-import javax.swing.*;
-import java.io.StringBufferInputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
 /**
  * Created by Cameo on 12/5/2015.
+ *
+ * Manages all calls to the database.
  */
 public class DatabaseManager {
 
@@ -24,7 +23,6 @@ public class DatabaseManager {
     static Statement createStudentDemoTableStatement = null;
     static Statement authStatement = null;
 
-    //TODO new resultset every time I need one
     static ResultSet rs = null;
     static ResultSet findInst = null;
     static ResultSet authRS = null;
@@ -46,11 +44,11 @@ public class DatabaseManager {
 
     public DatabaseManager(){
 
-        System.out.println("Went straight to set up");
+        System.out.println("Went straight to set up"); //For testing purposes
         DatabaseManager.setup();
     }
 
-    //setup() method taken from Clara's MovieRatings program
+    //setup() method obtained from Clara's MovieRatings program
     public static boolean setup() {
         try {
             //load driver class
@@ -106,6 +104,7 @@ public class DatabaseManager {
         return false;
     }
 
+    //Finds the unduplicated types of music lessons offered and adds them to the drop down
     public static ResultSet createInstrumentComboBox() {
         try {
             String instrumentComboBoxQuery = "select DISTINCT instrument from musiclessons.instructor_instrument;";
@@ -121,6 +120,8 @@ public class DatabaseManager {
         }
     }
 
+    //This method searches the database for instructors that give lessons for a particular instrument, and returns
+    //only those instructors located within a specified number of miles of the user prompted zip code
     public static ArrayList<String> lessonsWithinACertainRadius(String instrument, String[] zipCodeSearchArray){
 
         try {
@@ -151,6 +152,7 @@ public class DatabaseManager {
         }
     }
 
+    //Get this method working for version 2
     public static boolean authentication(String username, String password) {
         try {
             String auth = "select username from student_demo where username = '" + username + "' and password = '" + password + "';";
@@ -168,6 +170,7 @@ public class DatabaseManager {
 
     }
 
+    //Saves new student information into the database
     public static void saveNewStudent(Student newStudent){
         try {
             //prepared statement help from Week 12 slides
